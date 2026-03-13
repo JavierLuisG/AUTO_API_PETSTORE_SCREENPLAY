@@ -5,9 +5,9 @@ Feature: Gestion administrativa del ciclo de vida de usuarios en PetStore
     When el usuario queda registrado en el sistema con su perfil
     And se verifica la informacion del usuario registrado mediante su nombre "<username>"
     And se actualizan sus datos de contacto a correo "<updatedEmail>" y telefono "<updatedPhone>"
-    And se elimina definitivamente el registro del usuario "<username>"
-    Then el usuario "<username>" ya no se encuentra disponible para su gestion en el sistema
+    When se elimina definitivamente el registro del usuario "<username>"
+    Then el sistema confirma que el usuario "<username>" fue eliminado exitosamente
 
     Examples:
-      | username    | firstName | lastName | email                    | password   | phone      | updatedEmail                    | updatedPhone |
-      | userpet001  | Ana       | Gomez    | ana.gomez@petstore.com   | PetStore01 | 3001234567 | ana.actualizada@petstore.com    | 3007654321   |
+      | username   | firstName | lastName | email                  | password   | phone      | updatedEmail                 | updatedPhone |
+      | userpet001 | Ana       | Gomez    | ana.gomez@petstore.com | PetStore01 | 3001234567 | ana.actualizada@petstore.com | 3007654321   |

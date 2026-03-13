@@ -1,7 +1,7 @@
 package com.sofkianos.stepdefinitions;
 
 import com.sofkianos.models.User;
-import com.sofkianos.questions.ElUsuarioNoExiste;
+import com.sofkianos.questions.ElUsuarioFueEliminado;
 import com.sofkianos.tasks.ActualizarDatosDeContacto;
 import com.sofkianos.tasks.ConsultarUsuario;
 import com.sofkianos.tasks.EliminarUsuario;
@@ -72,9 +72,11 @@ public class UserStepDefinitions {
         actor.attemptsTo(EliminarUsuario.conNombre(username));
     }
 
-    @Then("el usuario {string} ya no se encuentra disponible para su gestion en el sistema")
-    public void validarQueElUsuarioYaNoExiste(String username) {
-        actor.should(GivenWhenThen.seeThat(ElUsuarioNoExiste.conNombre(username)));
+    @Then("el sistema confirma que el usuario {string} fue eliminado exitosamente")
+    public void confirmarEliminacionExitosa(String username) {
+        actor.should(
+            GivenWhenThen.seeThat(ElUsuarioFueEliminado.conNombre(username))
+        );
     }
 
     private String obtenerBaseUrl() {
