@@ -1,14 +1,12 @@
 defaultTasks 'clean', 'test', 'aggregate'
-
 repositories {
     mavenCentral()
     mavenLocal()
 }
-
 buildscript {
     repositories {
         maven {
-            url = "https://plugins.gradle.org/m2/"
+            url "https://plugins.gradle.org/m2/"
         }
     }
     dependencies {
@@ -16,45 +14,50 @@ buildscript {
         classpath "net.serenity-bdd:serenity-single-page-report:5.3.2"
     }
 }
-
-
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: "net.serenity-bdd.serenity-gradle-plugin"
-
-ext {
-    serenity_version = '5.3.2'
-    junit_platform_launcher_version="1.13.0"
-    cucumber_junit_platform_engine_version="7.34.2"
-    junit_platform_suite_version="6.0.3"
-    junit_jupiter_engine_version="6.0.3"
-    junit_vintage_engine_version="6.0.3"
-    logback_classic_version="1.2.10"
-    assertj_core_version="3.23.1"
+apply plugin: 'net.serenity-bdd.serenity-gradle-plugin'
+java {
+    sourceCompatibility = JavaVersion.VERSION_16
+    targetCompatibility = JavaVersion.VERSION_16
 }
-
+ext {
+    serenity_version = '4.2.22'
+    junit_platform_launcher_version = '1.11.4'
+    cucumber_junit_platform_engine_version = '7.20.1'
+    junit_platform_suite_version = '1.11.4'
+    junit_jupiter_engine_version = '5.11.4'
+    junit_vintage_engine_version = '5.11.4'
+    logback_classic_version = '1.2.10'
+    assertj_core_version = '3.23.1'
+}
 dependencies {
-    testImplementation "net.serenity-bdd:serenity-core:${serenity_version}"
+  testImplementation "net.serenity-bdd:serenity-core:${serenity_version}"
+    testImplementation "net.serenity-bdd:serenity-screenplay-rest:${serenity_version}"
     testImplementation "net.serenity-bdd:serenity-cucumber:${serenity_version}"
-    testImplementation "net.serenity-bdd:serenity-junit5:${serenity_version}"
     testImplementation "net.serenity-bdd:serenity-screenplay:${serenity_version}"
     testImplementation "net.serenity-bdd:serenity-screenplay-webdriver:${serenity_version}"
-    testImplementation "net.serenity-bdd:serenity-screenplay-rest:${serenity_version}"
     testImplementation "net.serenity-bdd:serenity-ensure:${serenity_version}"
+    testImplementation "net.serenity-bdd:serenity-rest-assured:${serenity_version}"
     testImplementation "org.junit.platform:junit-platform-launcher:${junit_platform_launcher_version}"
     testImplementation "io.cucumber:cucumber-junit-platform-engine:${cucumber_junit_platform_engine_version}"
     testImplementation "org.junit.platform:junit-platform-suite:${junit_platform_suite_version}"
     testImplementation "org.junit.jupiter:junit-jupiter-engine:${junit_jupiter_engine_version}"
     testImplementation "org.junit.vintage:junit-vintage-engine:${junit_vintage_engine_version}"
-    implementation "ch.qos.logback:logback-classic:${logback_classic_version}"
+    testImplementation "ch.qos.logback:logback-classic:${logback_classic_version}"
     testImplementation "org.assertj:assertj-core:${assertj_core_version}"
-    testImplementation "io.rest-assured:rest-assured:5.3.0"
-    testImplementation "com.google.code.gson:gson:2.10.1"
+    compileOnly "org.projectlombok:lombok:1.18.36"
+    annotationProcessor "org.projectlombok:lombok:1.18.36"
+    testCompileOnly "org.projectlombok:lombok:1.18.36"
+    testAnnotationProcessor "org.projectlombok:lombok:1.18.36"
 }
 
 test {
     useJUnitPlatform()
+    testLogging {
+        showStandardStreams = true
+    }
 }
 
 serenity {
