@@ -53,13 +53,11 @@ A diferencia de la automatización Front-End, aquí el Actor utiliza la capacida
 src/test
 └── java
     └── com.sofkianos
-        ├── interactions    <-- Métodos HTTP personalizados
         ├── models          <-- Objetos Java (POJOs) para los JSON
         ├── questions       <-- Validaciones de códigos de estado y esquemas
         ├── runners         <-- Ejecutor de Cucumber
         ├── stepdefinitions <-- Mapeo de Gherkin al Actor de API
-        ├── tasks           <-- Tareas del ciclo CRUD (Responsabilidad única)
-        └── util            <-- Constantes y Endpoints (Base URL)
+        └── tasks            <-- Tareas del ciclo CRUD (Responsabilidad única)
 └── resources
     ├── features            <-- Escenario CRUD declarativo
     └── serenity.conf       <-- Configuración de la URL base y logs
