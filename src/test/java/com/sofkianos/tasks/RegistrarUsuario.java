@@ -1,26 +1,17 @@
 package com.sofkianos.tasks;
 
+import com.sofkianos.models.User;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.rest.interactions.Post;
-
-import java.util.Map;
 
 public final class RegistrarUsuario {
 
     private RegistrarUsuario() {
     }
 
-    public static Task conDatos(String username, String firstName, String lastName, String email, String password,
-                                String phone) {
+        public static Task conDatos(User user) {
         return Task.where("{0} registra un nuevo usuario",
-                Post.to("/user").with(request -> request.body(Map.of(
-                        "username", username,
-                        "firstName", firstName,
-                        "lastName", lastName,
-                        "email", email,
-                        "password", password,
-                        "phone", phone
-                )))
+                                Post.to("/user").with(request -> request.body(user))
         );
     }
 }

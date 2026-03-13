@@ -1,5 +1,6 @@
 package com.sofkianos.stepdefinitions;
 
+import com.sofkianos.models.User;
 import com.sofkianos.questions.ElUsuarioNoExiste;
 import com.sofkianos.tasks.ActualizarDatosDeContacto;
 import com.sofkianos.tasks.ConsultarUsuario;
@@ -21,9 +22,11 @@ import net.serenitybdd.screenplay.rest.abilities.CallAnApi;
 public class UserStepDefinitions {
 
     private static final String NOMBRE_ACTOR = "Administrador de usuarios";
+    private static final long USER_ID = 0L;
+    private static final int USER_STATUS = 1;
 
     private Actor actor;
-    private UserData userData;
+    private User user;
 
     @Before
     public void prepararEscenario() {
@@ -35,21 +38,12 @@ public class UserStepDefinitions {
     @Given("que el area administrativa requiere registrar un usuario {string}, nombres {string}, apellidos {string}, correo {string}, clave {string} y telefono {string}")
     public void definirInformacionDelUsuario(String username, String firstName, String lastName, String email, String password,
                                              String phone) {
-        userData = new UserData(username, firstName, lastName, email, password, phone);
+        user = new User(USER_ID, username, firstName, lastName, email, password, phone, USER_STATUS);
     }
 
     @When("el usuario queda registrado en el sistema con su perfil")
     public void registrarUsuarioConSuPerfil() {
-        actor.attemptsTo(
-                RegistrarUsuario.conDatos(
-                        userData.username(),
-                        userData.firstName(),
-                        userData.lastName(),
-                        userData.email(),
-                        userData.password(),
-                        userData.phone()
-                )
-        );
+        actor.attemptsTo(RegistrarUsuario.conDatos(user));
     }
 
     @And("se verifica la informacion del usuario registrado mediante su nombre {string}")
@@ -59,16 +53,18 @@ public class UserStepDefinitions {
 
     @And("se actualizan sus datos de contacto a correo {string} y telefono {string}")
     public void actualizarDatosDeContactoDelUsuario(String updatedEmail, String updatedPhone) {
-        actor.attemptsTo(
-                ActualizarDatosDeContacto.delUsuario(
-                        userData.username(),
-                        userData.firstName(),
-                        userData.lastName(),
-                        updatedEmail,
-                        userData.password(),
-                        updatedPhone
-                )
+        user = new User(
+            user.id(),
+            user.username(),
+            user.firstName(),
+            user.lastName(),
+            updatedEmail,
+            user.password(),
+            updatedPhone,
+            user.userStatus()
         );
+
+        actor.attemptsTo(ActualizarDatosDeContacto.delUsuario(user));
     }
 
     @And("se elimina definitivamente el registro del usuario {string}")
@@ -91,9 +87,5 @@ public class UserStepDefinitions {
         }
 
         return baseUrl;
-    }
-
-    private record UserData(String username, String firstName, String lastName, String email, String password,
-                            String phone) {
     }
 }
